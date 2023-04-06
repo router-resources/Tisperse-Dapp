@@ -1,10 +1,11 @@
 import React,{useState} from 'react'
-import Tisperse from '../images/Tisperse.png'
-import Polygon from '../images/Polygon.png'
+import Tisperse from '../images/Tisperse3.png'
+import Polygon from '../images/Mumbai.png'
 import Fuji from '../images/Fuji.png'
 import BSC from '../images/BSC.png'
 import { ethers } from 'ethers';
 import { Modal, Button } from 'react-bootstrap'
+
 
 
 
@@ -37,6 +38,61 @@ function Login() {
     const [chain,SetChain]=useState('')
     const [value1,setValue1]=useState([])
     const [visible,setVisible]=useState('hidden')
+    const [transactionId, setTransactionId] = useState('');
+    const [accountShow,setAccountShow]=useState('')
+    const [selectChain,setSelectChain]=useState('select chain')
+    const [balance,setBalance]=useState(0)
+    
+    const chainObj={
+
+      "0x2370052a62F20aBb250eD8031b77108fee61e882":{
+        img:Polygon,
+        name:"Polygon Mumbai",
+        url:"https://mumbai.polygonscan.com/tx/"
+    },
+
+    "0x96f0D615EAf63875b094E7591f0735B2315711c3":{
+      img:BSC,
+      name:"BSC Testnet",
+      url:"https://testnet.bscscan.com/tx/"
+    },
+
+    "0x9e6ED12F3531d80671be36e319d5Bc53B106C2bF":{
+      img:Fuji,
+      name:"Avalanche Fuji",
+      url:"https://testnet.snowtrace.io/tx/"
+      
+    }
+    }
+    const sendMaticToken = async () => {
+        try {
+          if (typeof window.ethereum !== 'undefined') {
+            await window.ethereum.request({ method: 'eth_requestAccounts' });
+    
+            // Use Polygon Mainnet RPC URL
+            const polygonMainnetRPC = 'https://rpc.ankr.com/polygon_mumbai';
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+    
+            const toAddress = await signer.getAddress(); // Send to the user's address
+            const value = ethers.utils.parseEther('0'); // Send 0.1 MATIC token
+    
+            const transaction = {
+              to: toAddress,
+              value: value,
+            };
+    
+            const transactionResponse = await signer.sendTransaction(transaction);
+    
+            setTransactionId(transactionResponse.hash);
+          } else {
+            alert('Please install MetaMask.');
+          }
+        } catch (error) {
+          console.error('An error occurred:', error.message);
+          alert(`An error occurred: ${error.message}`);
+        }
+      };
     const connectwalletHandler = () => {
         if (window.Ethereum) {
             provider.send("eth_requestAccounts", []).then(async () => {
@@ -76,6 +132,12 @@ function Login() {
           method: "eth_requestAccounts",
         });
         setAccount(accounts[0].substring(0,4)+"...."+accounts[0].substring(38,42));
+        setAccountShow(accounts[0])
+
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const balanc=await provider.getBalance(accounts[0]);
+        setBalance(ethers.utils.formatEther(balanc))
+
       } catch (error) {
         console.log('Error connecting...');
       }
@@ -91,13 +153,15 @@ function Login() {
       await requestAccount();
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const balanc=provider.getBalance(accountShow);
+      setBalance(ethers.utils.formatEther(balanc))
     }
   }
  
   async function switchMumbai(){
 
-    SetChain('0x2370052a62F20aBb250eD8031b77108fee61e882')
-    window.ethereum.request({
+    await SetChain('0x2370052a62F20aBb250eD8031b77108fee61e882')
+    await window.ethereum.request({
         method: "wallet_addEthereumChain",
         params: [{
             chainId: "0x13881",
@@ -111,12 +175,14 @@ function Login() {
             blockExplorerUrls: ["https://mumbai.polygonscan.com/"]
         }]
     });
+    connectWallet()
+   
     
   }
 
   async function switchBSC(){
-    SetChain('0x96f0D615EAf63875b094E7591f0735B2315711c3')
-    window.ethereum.request({
+    await SetChain('0x96f0D615EAf63875b094E7591f0735B2315711c3')
+    await window.ethereum.request({
         method: "wallet_addEthereumChain",
         params: [{
             chainId: "0x61",
@@ -131,15 +197,16 @@ function Login() {
         }]
     });
    
+    connectWallet()
   }
 
   async function switchFuji(){
 
-    SetChain('0x9e6ED12F3531d80671be36e319d5Bc53B106C2bF')
-    window.ethereum.request({
+    await SetChain('0x9e6ED12F3531d80671be36e319d5Bc53B106C2bF')
+    await window.ethereum.request({
         method: "wallet_addEthereumChain",
         params: [{
-            chainId: "0xa869",
+            chainId: "0xA869",
             rpcUrls: ["https://rpc.ankr.com/avalanche_fuji"],
             chainName: "Avalanche Fuji by ANKR Protocol",
             nativeCurrency: {
@@ -150,6 +217,10 @@ function Login() {
             blockExplorerUrls: ["https://testnet.snowtrace.io/"]
         }]
     });
+    
+    // const balanc=await provider.getBalance(accountShow);
+    //     setBalance(ethers.utils.formatEther(balanc))
+    connectWallet()
     
   }
 
@@ -171,7 +242,7 @@ function Login() {
       
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Select Chain
+          {chain!=''?<img style={{'width':'12em','height':'3em'}} src={chainObj[chain].img}/>:`${selectChain}`}
         </a>
         <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
         <img class="dropdown-item" style={{'width':'12em','height':'3em'}}src={Polygon} onClick={
@@ -179,10 +250,10 @@ function Login() {
        
        
     }></img>
-        <img class="dropdown-item" style={{'width':'12em'}} src={Fuji} onClick={
+        <img class="dropdown-item" style={{'width':'12em','height':'3em'}} src={Fuji} onClick={
             switchFuji
         }></img>
-        <img class="dropdown-item" style={{'width':'12em','height':'2.5em'}} src={BSC}    onClick={
+        <img class="dropdown-item" style={{'width':'12em','height':'3em'}} src={BSC}    onClick={
         switchBSC
        
         
@@ -361,7 +432,7 @@ function Login() {
       }}></textarea> */}
 <div class="content">
 
-    <div style={{'background-color':'green','width':'70em','content-align':'center'}}>Transaction Successful</div>
+    
 
     <br></br>
 <textarea placeholder="Wallet Address,amount" rows="12" cols="47" onChange={(e)=>{
@@ -433,7 +504,7 @@ function Login() {
      
 <button class="button-29" role="button" onClick={async()=>{
 
-
+    
         const signer = provider.getSigner();
 
         // const contractAddress = "0x9e6ED12F3531d80671be36e319d5Bc53B106C2bF";
@@ -513,47 +584,88 @@ function Login() {
         //     alert('erreo uploading document')
         // })
 
-        contract.disperseEther(finalAdd,value,{ value: ethers.utils.parseEther(amount.toString()) }).then(()=>{
+        contract.disperseEther(finalAdd,value,{ value: ethers.utils.parseEther(amount.toString()) }).then((transaction)=>{
             // alert('Transaction Successful')
             setVisible('visible')
+            setTransactionId(transaction.hash)
         }).catch(async(err)=>{
-            // alert(err)
-            // console.log(err)
-            // console.log(typeof(err))
-
-            
-
-               
-            
-                const contractAddress = "0x9e6ed12f3531d80671be36e319d5bc53b106c2bf";
-                const walletAddress = "0x39653bdEECf744AA719112f08A2b484009b72C21";
-                
-
-   
-
-// 
-
-const { ethers } = require('ethers');
-
-const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com/');
-const address = walletAddress; // Replace with your wallet address
-
-provider.getHistory(address).then((history) => {
-  console.log('Transaction history:', history);
-}).catch((error) => {
-  console.error(error);
-});
-
-
-
-
-
-
+          // const { chainId } = await provider.getNetwork()
+          //   alert(chainId)
+            // SetChain(chain)
+          
                         })
 
                             
         
-       }}>Disperse</button>
+       }}>Tisperse</button>
+    <br></br>
+   
+       
+    {account!='Connect Wallet' && finalAdd.length>=1  ? <div style={{'color':'white'}}>
+    <br></br>
+    <h3>Confirm</h3>
+    <table>
+    
+      <tr>
+    <th>address</th>
+    <th>&nbsp;</th>
+    <th>amount</th>
+    </tr>
+    
+    {
+    
+    finalAdd.map((x,y,z)=>{
+      return(
+        <tr>
+          <td>
+      {x}
+      </td>
+      <td>&nbsp;</td>
+      <td>{value1[y]}</td>
+      </tr>
+      )
+    })
+    
+    
+    }
+    <br></br>
+    <tr>
+    <th>total</th>
+    <th>&nbsp;</th>
+    <td>{amount}</td>
+
+    </tr>
+    <tr>
+    <th>your balance</th>
+    <th>&nbsp;</th>
+    <td>{balance}</td>
+
+    </tr>
+    <tr>
+    <th>remaining</th>
+    <th>&nbsp;</th>
+    <td>{balance-amount}</td>
+    {/* <td>{chain}</td> */}
+
+    </tr>
+  
+    </table> 
+    <table>
+
+    <tr style={{'background-color':'green','visibility':`${visible}`}}>
+    {visible!='hidden' &&  <th>
+     
+     Transaction Id: <a href={`${chainObj[chain].url}${transactionId}`}>{transactionId}</a>
+     </th> }
+   
+   
+    
+    </tr>
+    </table>
+    {/* qwerty {finalAdd[0]} */}
+    </div>:<div></div>}
+
+
 </div>
 
 
