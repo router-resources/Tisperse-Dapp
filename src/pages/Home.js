@@ -5,6 +5,7 @@ import Fuji from '../images/Fuji.png'
 import BSC from '../images/BSC.png'
 import { ethers } from 'ethers';
 import { Modal, Button } from 'react-bootstrap'
+import {Routes, Route, useNavigate} from 'react-router-dom';
 
 
 
@@ -42,6 +43,12 @@ function Login() {
     const [accountShow,setAccountShow]=useState('')
     const [selectChain,setSelectChain]=useState('select chain')
     const [balance,setBalance]=useState(0)
+    const [erc20,setErc20]=useState('')
+    const [selectMode, setSelectMode]=useState('Ether')
+    const [ERC20Balance,setERC20Balance]=useState(0)
+    const [tokenAddress,setTokenAddress]=useState('')
+    const [erc20text,seterc20Text]=useState('Import Token')
+    const [erc20Class,seterc20Class]=useState('button-31')
     
     const chainObj={
 
@@ -154,8 +161,8 @@ function Login() {
         method: "wallet_addEthereumChain",
         params: [{
             chainId: "0x13881",
-            rpcUrls: ["https://rpc.ankr.com/polygon_mumbai"],
-            chainName: "Mumbai testnet by ANKR Protocol",
+            rpcUrls: ["https://matic-mumbai.chainstacklabs.com"],
+            chainName: "Mumbai",
             nativeCurrency: {
                 name: "MATIC",
                 symbol: "MATIC",
@@ -169,14 +176,17 @@ function Login() {
     
   }
 
+
   async function switchBSC(){
+    
     await SetChain('0x96f0D615EAf63875b094E7591f0735B2315711c3')
+    try{
     await window.ethereum.request({
         method: "wallet_addEthereumChain",
         params: [{
             chainId: "0x61",
-            rpcUrls: ["https://rpc.ankr.com/bsc_testnet_chapel"],
-            chainName: "BSC testnet by ANKR Protocol",
+            rpcUrls: ["https://data-seed-prebsc-1-s3.binance.org:8545/"],
+            chainName: "BSC testnet",
             nativeCurrency: {
                 name: "BNB",
                 symbol: "BNB",
@@ -185,8 +195,12 @@ function Login() {
             blockExplorerUrls: ["https://testnet.bscscan.com"]
         }]
     });
-   
     connectWallet()
+  }
+  catch(err){
+    // alert(err)
+  }
+    
   }
 
   async function switchFuji(){
@@ -196,8 +210,8 @@ function Login() {
         method: "wallet_addEthereumChain",
         params: [{
             chainId: "0xA869",
-            rpcUrls: ["https://rpc.ankr.com/avalanche_fuji"],
-            chainName: "Avalanche Fuji by ANKR Protocol",
+            rpcUrls: ["https://api.avax-test.network/ext/bc/C/rpc"],
+            chainName: "Avalanche Testnet",
             nativeCurrency: {
                 name: "AVAX",
                 symbol: "AVAX",
@@ -223,13 +237,13 @@ function Login() {
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    {/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav" >
       
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
           {chain!=''?<img style={{'width':'12em','height':'3em'}} src={chainObj[chain].img}/>:`${selectChain}`}
         </a>
         <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
@@ -253,13 +267,46 @@ function Login() {
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    
+
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav" >
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+          {selectMode}
+        </a>
+        <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdownMenuLink">
+        <div class="dropdown-item" style={{'width':'12em','height':'3em'}}onClick={()=>{
+           setSelectMode('Ether')
+        }
+      
+       
+       
+    }>Ether</div>
+        <div class="dropdown-item" style={{'width':'12em','height':'3em'}}  onClick={()=>{
+          setSelectMode('ERC20')
+        }
+           
+        }>ERC20</div>
+        
+        </div>
+
+      </li>
+    </ul>
+    </div>
+
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    {/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
     <button type="button" class="btn btn-secondary" onClick={
         
 
         connectWallet}>{account}</button>
+
   </div>
 
  
@@ -272,6 +319,412 @@ function Login() {
     
 
     <br></br>
+    {selectMode=='ERC20'?<div>&nbsp;&nbsp;<textarea placeholder="Address" rows="2" cols="47" onChange={async (e)=>{setErc20(e.target.value)
+  
+  
+  }}></textarea>
+    <br></br>
+    <br></br>
+    <button class={erc20Class} role="button"   onClick={async ()=>{setTokenAddress(erc20)
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    
+    const signer = provider.getSigner();
+const erc20contract=new ethers.Contract(erc20,[
+{
+  "inputs": [],
+  "stateMutability": "nonpayable",
+  "type": "constructor"
+},
+{
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": true,
+      "internalType": "address",
+      "name": "owner",
+      "type": "address"
+    },
+    {
+      "indexed": true,
+      "internalType": "address",
+      "name": "spender",
+      "type": "address"
+    },
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "value",
+      "type": "uint256"
+    }
+  ],
+  "name": "Approval",
+  "type": "event"
+},
+{
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": true,
+      "internalType": "address",
+      "name": "previousOwner",
+      "type": "address"
+    },
+    {
+      "indexed": true,
+      "internalType": "address",
+      "name": "newOwner",
+      "type": "address"
+    }
+  ],
+  "name": "OwnershipTransferred",
+  "type": "event"
+},
+{
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": true,
+      "internalType": "address",
+      "name": "from",
+      "type": "address"
+    },
+    {
+      "indexed": true,
+      "internalType": "address",
+      "name": "to",
+      "type": "address"
+    },
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "value",
+      "type": "uint256"
+    }
+  ],
+  "name": "Transfer",
+  "type": "event"
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "owner",
+      "type": "address"
+    },
+    {
+      "internalType": "address",
+      "name": "spender",
+      "type": "address"
+    }
+  ],
+  "name": "allowance",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "spender",
+      "type": "address"
+    },
+    {
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }
+  ],
+  "name": "approve",
+  "outputs": [
+    {
+      "internalType": "bool",
+      "name": "",
+      "type": "bool"
+    }
+  ],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "account",
+      "type": "address"
+    }
+  ],
+  "name": "balanceOf",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }
+  ],
+  "name": "burn",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "account",
+      "type": "address"
+    },
+    {
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }
+  ],
+  "name": "burnFrom",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "decimals",
+  "outputs": [
+    {
+      "internalType": "uint8",
+      "name": "",
+      "type": "uint8"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "spender",
+      "type": "address"
+    },
+    {
+      "internalType": "uint256",
+      "name": "subtractedValue",
+      "type": "uint256"
+    }
+  ],
+  "name": "decreaseAllowance",
+  "outputs": [
+    {
+      "internalType": "bool",
+      "name": "",
+      "type": "bool"
+    }
+  ],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "spender",
+      "type": "address"
+    },
+    {
+      "internalType": "uint256",
+      "name": "addedValue",
+      "type": "uint256"
+    }
+  ],
+  "name": "increaseAllowance",
+  "outputs": [
+    {
+      "internalType": "bool",
+      "name": "",
+      "type": "bool"
+    }
+  ],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "to",
+      "type": "address"
+    },
+    {
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }
+  ],
+  "name": "mint",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "name",
+  "outputs": [
+    {
+      "internalType": "string",
+      "name": "",
+      "type": "string"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "owner",
+  "outputs": [
+    {
+      "internalType": "address",
+      "name": "",
+      "type": "address"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "renounceOwnership",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "symbol",
+  "outputs": [
+    {
+      "internalType": "string",
+      "name": "",
+      "type": "string"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "totalSupply",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "to",
+      "type": "address"
+    },
+    {
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }
+  ],
+  "name": "transfer",
+  "outputs": [
+    {
+      "internalType": "bool",
+      "name": "",
+      "type": "bool"
+    }
+  ],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "from",
+      "type": "address"
+    },
+    {
+      "internalType": "address",
+      "name": "to",
+      "type": "address"
+    },
+    {
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }
+  ],
+  "name": "transferFrom",
+  "outputs": [
+    {
+      "internalType": "bool",
+      "name": "",
+      "type": "bool"
+    }
+  ],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "newOwner",
+      "type": "address"
+    }
+  ],
+  "name": "transferOwnership",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+}
+],signer);
+const accounts = await window.ethereum.request({
+method: "eth_requestAccounts",
+});
+const erc20bal=await erc20contract.balanceOf(accounts[0])
+seterc20Text('Token Imported')
+seterc20Class('button-32')
+console.log(ethers.utils.formatEther(erc20bal));
+setERC20Balance(ethers.utils.formatEther(erc20bal));
+  
+  
+  }
+    
+    
+    }>{erc20text}</button>
+    <br></br>
+    <br></br>
+    </div>:<div></div>}
+   
 <textarea placeholder="Wallet Address,amount" rows="12" cols="47" onChange={(e)=>{
         setInputAdd(e.target.value)
         let str=""
@@ -410,15 +863,30 @@ function Login() {
             signer
         );
 
-
-        contract.disperseEther(finalAdd,value,{ value: ethers.utils.parseEther(amount.toString()) }).then((transaction)=>{
+        if(selectMode=='Ether')
+        {
+          contract.disperseEther(finalAdd,value,{ value: ethers.utils.parseEther(amount.toString()) }).then((transaction)=>{
           
             setVisible('visible')
             setTransactionId(transaction.hash)
         }).catch(async(err)=>{
-        alert(err)
+              alert(err)
           
                         })
+        }
+        else if(selectMode=='ERC20')
+        { 
+          
+          contract.disperseToken(erc20,finalAdd,value).then((transaction)=>{
+          
+            setVisible('visible')
+            setTransactionId(transaction.hash)
+        }).catch(async(err)=>{
+              alert(err)
+          
+                        })
+        }
+       
 
                             
         
@@ -428,13 +896,13 @@ function Login() {
        
     {account!='Connect Wallet' && finalAdd.length>=1  ? <div style={{'color':'white'}}>
     <br></br>
-    <h3>Confirm</h3>
+    <h3 style={{'font-family': 'Bilbo Swash Caps','font-size':'40px'}}>Confirm</h3>
     <table>
     
       <tr>
-    <th>address</th>
+    <td style={{'font-family': 'Bilbo Swash Caps','font-size':'30px'}}>address</td>
     <th>&nbsp;</th>
-    <th>amount</th>
+    <td style={{'font-family': 'Bilbo Swash Caps','font-size':'30px'}}>amount</td>
     </tr>
     
     {
@@ -455,21 +923,20 @@ function Login() {
     }
     <br></br>
     <tr>
-    <th>total</th>
+    <td style={{'font-family': 'Bilbo Swash Caps','font-size':'30px'}}>total</td>
     <th>&nbsp;</th>
     <td>{amount}</td>
 
     </tr>
     <tr>
-    <th>your balance</th>
+    <td style={{'font-family': 'Bilbo Swash Caps','font-size':'30px'}}>your balance</td>
     <th>&nbsp;</th>
-    <td>{balance}</td>
-
+    {selectMode=='Ether'?<td>{balance}</td>:<td>{ERC20Balance}</td>}
     </tr>
     <tr>
-    <th>remaining</th>
+    <td style={{'font-family': 'Bilbo Swash Caps','font-size':'30px'}}>remaining</td>
     <th>&nbsp;</th>
-    <td>{balance-amount}</td>
+    {selectMode=='Ether'?<td>{balance-amount}</td>:<td>{ERC20Balance-amount}</td>}
    
 
     </tr>
@@ -478,7 +945,7 @@ function Login() {
     <table>
 
     <tr style={{'background-color':'green','visibility':`${visible}`}}>
-    {visible!='hidden' &&  <th>
+    {visible!='hidden' &&  <th style={{'font-family': 'Bilbo Swash Caps','font-size':'30px'}}>
      
      Transaction Id: <a href={`${chainObj[chain].url}${transactionId}`}>{transactionId}</a>
      </th> }
