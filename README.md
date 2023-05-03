@@ -32,9 +32,10 @@ Tisperse makes it easy and convenient for you to send crypto to multiple people 
 2) Select Token to be either Native or ERC20.
 
 3) Input in the following format:-
-<address> <amount>
-0x.....99 43423
-0x.....23 23344 
+
+   address amount
+   0x.....99 43423
+   0x.....23 23344 
 
 
 4) If you selected ERC20 token in Step 2 , then put in your ERC20 contract address and click on Import Token. Skip this step if you selected Native Token in Step 2.
