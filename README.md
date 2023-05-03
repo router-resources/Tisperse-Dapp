@@ -8,12 +8,18 @@ Tisperse is a project that allows you to send cryptocurrencies in bulk to a larg
 
 # 📈 Features
 
-Ability to send cryptocurrencies to multiple recipients at once
-Supports multiple testnets such as Fuji, Mumbai, and BSC
-Works on web, Android, and iOS
-Easy to use and user-friendly interface
-Saves time and effort
+** Ability to send cryptocurrencies to multiple recipients at once
+
+** Supports multiple testnets such as Fuji, Mumbai, and BSC 
+
+** Works on web, Android, and iOS
+
+** Easy to use and user-friendly interface
+
+** Saves time and effort
+
 💬 Why Choose Tisperse?
+
 Tisperse makes it easy and convenient for you to send crypto to multiple people at once, which is especially useful if you need to make payments to a large group of people. With Tisperse, you can save time and effort by sending your crypto in one transaction instead of multiple transactions, making the process more efficient and cost-effective.
 
 # 💻 Compatibility
