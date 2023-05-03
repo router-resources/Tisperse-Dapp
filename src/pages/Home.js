@@ -41,10 +41,10 @@ function Login() {
     const [visible,setVisible]=useState('hidden')
     const [transactionId, setTransactionId] = useState('');
     const [accountShow,setAccountShow]=useState('')
-    const [selectChain,setSelectChain]=useState('select chain')
+    const [selectChain,setSelectChain]=useState('Select Chain')
     const [balance,setBalance]=useState(0)
     const [erc20,setErc20]=useState('')
-    const [selectMode, setSelectMode]=useState('Ether')
+    const [selectMode, setSelectMode]=useState('Select Token')
     const [ERC20Balance,setERC20Balance]=useState(0)
     const [tokenAddress,setTokenAddress]=useState('')
     const [erc20text,seterc20Text]=useState('Import Token')
@@ -237,8 +237,7 @@ function Login() {
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    {/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
+  
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav" >
       
@@ -276,19 +275,19 @@ function Login() {
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
           {selectMode}
         </a>
-        <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdownMenuLink">
+        <div class="dropdown-menu bg-lightp-" aria-labelledby="navbarDropdownMenuLink">
         <div class="dropdown-item" style={{'width':'12em','height':'3em'}}onClick={()=>{
-           setSelectMode('Ether')
+           setSelectMode('Native')
         }
       
        
        
-    }>Ether</div>
+    }>Native</div>
         <div class="dropdown-item" style={{'width':'12em','height':'3em'}}  onClick={()=>{
-          setSelectMode('ERC20')
+          setSelectMode('Other')
         }
            
-        }>ERC20</div>
+        }>Other</div>
         
         </div>
 
@@ -319,7 +318,7 @@ function Login() {
     
 
     <br></br>
-    {selectMode=='ERC20'?<div>&nbsp;&nbsp;<textarea placeholder="Address" rows="2" cols="47" onChange={async (e)=>{setErc20(e.target.value)
+    {selectMode=='Other'?<div>&nbsp;&nbsp;<textarea placeholder="Address" rows="2" cols="47" onChange={async (e)=>{setErc20(e.target.value)
   
   
   }}></textarea>
@@ -724,8 +723,8 @@ setERC20Balance(ethers.utils.formatEther(erc20bal));
     <br></br>
     <br></br>
     </div>:<div></div>}
-   
-<textarea placeholder="Wallet Address,amount" rows="12" cols="47" onChange={(e)=>{
+  
+<textarea placeholder="Input in the following format:-&#10;0x.....99 43423&#10;0x.....23 23344&#10;<address> <amount>" rows="12" cols="47" onChange={(e)=>{
         setInputAdd(e.target.value)
         let str=""
         let c=0;
@@ -863,18 +862,18 @@ setERC20Balance(ethers.utils.formatEther(erc20bal));
             signer
         );
 
-        if(selectMode=='Ether')
+        if(selectMode=='Native' || selectMode=='Select Token')
         {
           contract.disperseEther(finalAdd,value,{ value: ethers.utils.parseEther(amount.toString()) }).then((transaction)=>{
           
             setVisible('visible')
             setTransactionId(transaction.hash)
         }).catch(async(err)=>{
-              alert(err)
+              // alert(err)
           
                         })
         }
-        else if(selectMode=='ERC20')
+        else if(selectMode=='Other')
         { 
           
           contract.disperseToken(erc20,finalAdd,value).then((transaction)=>{
@@ -882,7 +881,7 @@ setERC20Balance(ethers.utils.formatEther(erc20bal));
             setVisible('visible')
             setTransactionId(transaction.hash)
         }).catch(async(err)=>{
-              alert(err)
+              // alert(err)
           
                         })
         }
@@ -931,12 +930,12 @@ setERC20Balance(ethers.utils.formatEther(erc20bal));
     <tr>
     <td style={{'font-family': 'Bilbo Swash Caps','font-size':'30px'}}>your balance</td>
     <th>&nbsp;</th>
-    {selectMode=='Ether'?<td>{balance}</td>:<td>{ERC20Balance}</td>}
+    {selectMode=='Native' || selectMode=='Select Token'?<td>{balance}</td>:<td>{ERC20Balance}</td>}
     </tr>
     <tr>
     <td style={{'font-family': 'Bilbo Swash Caps','font-size':'30px'}}>remaining</td>
     <th>&nbsp;</th>
-    {selectMode=='Ether'?<td>{balance-amount}</td>:<td>{ERC20Balance-amount}</td>}
+    {selectMode=='Native' || selectMode=='Select Token'?<td>{balance-amount}</td>:<td>{ERC20Balance-amount}</td>}
    
 
     </tr>
@@ -945,7 +944,7 @@ setERC20Balance(ethers.utils.formatEther(erc20bal));
     <table>
 
     <tr style={{'background-color':'green','visibility':`${visible}`}}>
-    {visible!='hidden' &&  <th style={{'font-family': 'Bilbo Swash Caps','font-size':'30px'}}>
+    {visible!='hidden' &&  <th >
      
      Transaction Id: <a href={`${chainObj[chain].url}${transactionId}`}>{transactionId}</a>
      </th> }
