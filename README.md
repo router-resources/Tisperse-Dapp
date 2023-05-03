@@ -1,6 +1,6 @@
 # 🚀 `Tisperse: Sending Cryptos in Bulk`
 
-Tisperse is a unique project that aims to solve the problem of sending cryptocurrencies in bulk to a large group of people at the same time in a single transaction. With Tisperse, you can send your crypto to multiple people in one go without any hassle, saving you time and effort.
+Tisperse is a Public Goods by Router Protocol that aims to solve the problem of sending cryptocurrencies in bulk to a large group of people at the same time in a single transaction. With Tisperse, you can send your crypto to multiple people in one go without any hassle, saving you time and effort.
 
 # 💡 What is Tisperse?
 
