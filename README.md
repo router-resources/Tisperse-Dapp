@@ -26,13 +26,6 @@ Tisperse is a project that allows you to send cryptocurrencies in bulk to a larg
 
 Tisperse makes it easy and convenient for you to send crypto to multiple people at once, which is especially useful if you need to make payments to a large group of people. With Tisperse, you can save time and effort by sending your crypto in one transaction instead of multiple transactions, making the process more efficient and cost-effective.
 
-# 💻 Compatibility
-
-Tisperse is available on a wide range of platforms, including:
-
-Web
-Android
-iOS
 
 # 🎯 How to use Tisperse?
 
@@ -40,11 +33,15 @@ iOS
 
 2) Select Token to be either Native or ERC20.
 
-3) Fill in the Address
+3) Input in the following format:-
+<address> <amount>
+0x.....99 43423
+0x.....23 23344 
 
-4) If you selected ERC20 token in Step 2 , then put in your ERC20 contract address and click on Import Token.Skip this step if you selected Native Token in Step 2.
 
-5) 
+4) If you selected ERC20 token in Step 2 , then put in your ERC20 contract address and click on Import Token. Skip this step if you selected Native Token in Step 2.
+
+5) Click on Tisperse to make the transaction.
 
 # ⭐️ Star us
 
