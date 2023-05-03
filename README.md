@@ -1,6 +1,10 @@
-# 🚀 `Tisperse: Sending Cryptos in Bulk`
+# 🚀 `Tisperse`
 
-Tisperse is a Public Goods by Router Protocol that aims to solve the problem of sending cryptocurrencies in bulk to a large group of people at the same time in a single transaction. With Tisperse, you can send your crypto to multiple people in one go without any hassle, saving you time and effort.
+> Sending Cryptos in Bulk`
+
+Tisperse comes under Public Goods by [Router Protocol](https://www.routerprotocol.com/) 
+
+Tisperse aims to solve the problem of sending cryptocurrencies in bulk to a large group of people at the same time in a single transaction. With Tisperse, you can send your crypto to multiple people in one go without any hassle, saving you time and effort.
 
 # 💡 What is Tisperse?
 
@@ -30,9 +34,17 @@ Web
 Android
 iOS
 
-# 📖 Getting Started
+# 🎯 How to use Tisperse?
 
-To get started with Tisperse, simply visit our website and sign up for an account. Once you have created an account, you can start using Tisperse to send crypto to multiple recipients at once.
+1) Select your chain on which you want to make the transaction.Currently we support 3 Testnets namely, **Avalache Fuji**,**Polygon Mumbai** and **BSC Testnet**.
+
+2) Select Token to be either Native or ERC20.
+
+3) Fill in the Address
+
+4) If you selected ERC20 token in Step 2 , then put in your ERC20 contract address and click on Import Token.Skip this step if you selected Native Token in Step 2.
+
+5) 
 
 # ⭐️ Star us
 
