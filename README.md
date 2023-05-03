@@ -6,6 +6,8 @@ Tisperse comes under Public Goods by [Router Protocol](https://www.routerprotoco
 
 Tisperse aims to solve the problem of sending cryptocurrencies in bulk to a large group of people at the same time in a single transaction. With Tisperse, you can send your crypto to multiple people in one go without any hassle, saving you time and effort.
 
+![Tisperse](https://firebasestorage.googleapis.com/v0/b/tisperse.appspot.com/o/0503.gif?alt=media&token=2e757bb6-f6d0-4572-bd4c-aac4b96616cd)
+
 # 💡 What is Tisperse?
 
 Tisperse is a project that allows you to send cryptocurrencies in bulk to a large number of people at the same time. Unlike normal wallets, which only allow you to send crypto to one person at a time, Tisperse makes it possible to send your crypto to multiple people at once, making the process more efficient and convenient.
