@@ -16,11 +16,9 @@ Tisperse is a project that allows you to send cryptocurrencies in bulk to a larg
 
 2) Supports multiple testnets such as Fuji, Mumbai, and BSC 
 
-3) Works on web, Android, and iOS
+3) Easy to use and user-friendly interface
 
-4) Easy to use and user-friendly interface
-
-5) Saves time and effort
+4) Saves time and effort
 
 # 💬 Why Choose Tisperse?
 
